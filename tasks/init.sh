@@ -1,1 +1,0 @@
-terraform init -backend-config="bucket=terraform-state-ubarik" -backend-config="key=state/master/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=1" -backend=true -force-copy -get=true -input=false
