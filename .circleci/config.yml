@@ -1,10 +1,10 @@
 # CircleCI Config YAML File
 version: 2.1
 
-executor:
+executors:
   terraform_builder:
     machine:
-      - image: ubuntu-1604:201903-01
+      image: ubuntu-1604:201903-01
 
 workflows:
    main:
@@ -18,38 +18,36 @@ jobs:
     steps:
       - checkout
       - run: curl -o terraform.zip https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
-      - run: unzip terraform.zip -d /usr/bin
+      - run: sudo unzip terraform.zip -d /usr/bin
       - run:
           name: Terraform Init
           command: >
-            if terraform init -backend-config="bucket=terraform-state-ubarik" \ 
-            -backend-config="key=state/master/terraform.tfstate" -backend-config="region=us-west-2" \
-            -backend-config="encrypt=1" -backend=true -force-copy -get=true -input=false 
-            then echo "init with no errors" 
-            else echo "terraform init failed with error" 
-            exit 125
+            if terraform init -backend-config="bucket=terraform-state-ubarik" -backend-config="key=state/master/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=1" -backend=true -force-copy -get=true -input=false; 
+            then echo "init with no errors";
+            else echo "terraform init failed with error";
+            exit 125;
             fi
       - run:
           name: Terraform Get
           command: >
-            if terraform get
-            then echo "get with no errors"
-            else echo "terraform get failed with error"
-            exit 125
+            if terraform get;
+            then echo "get with no errors";
+            else echo "terraform get failed with error";
+            exit 125;
             fi
       - run:
           name: Terraform Plan
           command: >
-            if terraform plan -out ./terraform-plan.txt
-            then echo "plan with no errors"
-            else echo "terraform plan failed with error"
-            exit 125
+            if terraform plan -out ./terraform-plan.txt;
+            then echo "plan with no errors";
+            else echo "terraform plan failed with error";
+            exit 125;
             fi
       - run:
           name: Terraform Apply
           command: >
-              if terraform apply -no-color ./terraform-plan.txt
-              then echo "apply with no errors"
-              else echo "terraform apply failed with error"
-              exit 125
+              if terraform apply -no-color ./terraform-plan.txt;
+              then echo "apply with no errors";
+              else echo "terraform apply failed with error";
+              exit 125;
               fi
