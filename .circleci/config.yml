@@ -4,7 +4,7 @@ version: 2.1
 executors:
   terraform_builder:
     machine:
-      - image: ubuntu-1604:201903-01
+      image: ubuntu-1604:201903-01
 
 workflows:
    main:
